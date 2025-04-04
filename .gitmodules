@@ -1,0 +1,8 @@
+[submodule "include/external/sqlite-amalgamation"]
+	path = include/external/sqlite-amalgamation
+	url = https://github.com/azadkuh/sqlite-amalgamation.git
+
+[submodule "include/external/DatabaseAdapter"]
+	path = include/external/DatabaseAdapter
+	url = https://github.com/MisterixTeamAsmodeus/DatabaseAdapter.git
+
