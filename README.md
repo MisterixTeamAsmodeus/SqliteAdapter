@@ -1,1 +1,1 @@
-# DatabaseAdapter
+# SqliteAdapter
