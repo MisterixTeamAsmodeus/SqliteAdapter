@@ -19,13 +19,13 @@ Models::QueryResult SqliteTransaction::exec(const std::string& query)
 
 bool SqliteTransaction::commit()
 {
-    return sqlite3_exec(_database, "COMMIT;", nullptr, nullptr, nullptr) != SQLITE_OK;
+    return sqlite3_exec(_database, "COMMIT;", nullptr, nullptr, nullptr) == SQLITE_OK;
 }
 
 bool SqliteTransaction::rollback(const std::string& save_point)
 {
     const auto sql = save_point.empty() ? "ROLLBACK;" : "ROLLBACK TO " + save_point;
-    return sqlite3_exec(_database, sql.c_str(), nullptr, nullptr, nullptr) != SQLITE_OK;
+    return sqlite3_exec(_database, sql.c_str(), nullptr, nullptr, nullptr) == SQLITE_OK;
 }
 
 bool SqliteTransaction::add_save_point(const std::string& save_point)
