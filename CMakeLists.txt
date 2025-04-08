@@ -48,7 +48,3 @@ install(TARGETS ${PROJECT_NAME}
 install(DIRECTORY include/
         DESTINATION include
 )
-
-if(${SQLITE_ADAPTER_EXAMPLE})
-    add_subdirectory(example)
-endif ()
