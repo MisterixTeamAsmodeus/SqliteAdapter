@@ -38,8 +38,6 @@ Models::QueryResult exec_sqlite_script(sqlite3* database, const std::string& que
         throw sql_exception(_last_error.c_str(), query.c_str());
     }
 
-    sqlite3_finalize(stmt);
-
     return result;
 }
 } // namespace Helpers
