@@ -13,7 +13,7 @@ Models::QueryResult exec_sqlite_script(sqlite3* database, const std::string& que
     if(sqlite3_prepare_v2(database, query.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         std::string _last_error = "Failed to prepare statement: ";
         _last_error.append(sqlite3_errmsg(database));
-        throw sql_exception(_last_error.c_str(), query.c_str());
+        throw sql_exception(std::move(_last_error), query);
     }
 
     int rc = sqlite3_step(stmt);
@@ -35,7 +35,7 @@ Models::QueryResult exec_sqlite_script(sqlite3* database, const std::string& que
     if(rc != SQLITE_DONE) {
         std::string _last_error = "Failed to execute statement: ";
         _last_error.append(sqlite3_errmsg(database));
-        throw sql_exception(_last_error.c_str(), query.c_str());
+        throw sql_exception(std::move(_last_error), query);
     }
 
     return result;

@@ -26,7 +26,7 @@ bool SqliteDatabaseAdapter::connect()
     if(sqlite3_open(_settings.url.c_str(), &_database) != SQLITE_OK) {
         std::string _last_error = "Can't open database: ";
         _last_error.append(sqlite3_errmsg(_database));
-        throw open_database_exception(_last_error.c_str());
+        throw open_database_exception(std::move(_last_error));
     }
 
     return true;
