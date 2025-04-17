@@ -8,7 +8,10 @@ project(${sqlite_adapter_project_name} LANGUAGES CXX)
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
-add_subdirectory(include/external/sqlite-amalgamation)
+if(NOT TARGET SQLite3)
+    add_subdirectory(include/external/sqlite-amalgamation)
+endif()
+
 if(NOT TARGET DatabaseAdapter)
     add_subdirectory(include/external/DatabaseAdapter)
 endif()
