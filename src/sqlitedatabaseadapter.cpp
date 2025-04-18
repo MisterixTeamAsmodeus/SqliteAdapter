@@ -51,11 +51,11 @@ std::shared_ptr<ITransaction> SqliteDatabaseAdapter::open_transaction(int type) 
 {
     const auto sql = [&type]() {
         switch(type) {
-            case TransactionType::DEFERRED:
+            case static_cast<int>(TransactionType::DEFERRED):
                 return "BEGIN DEFERRED;";
-            case TransactionType::IMMEDIATE:
+            case static_cast<int>(TransactionType::IMMEDIATE):
                 return "BEGIN IMMEDIATE;";
-            case TransactionType::EXCLUSIVE:
+            case static_cast<int>(TransactionType::EXCLUSIVE):
                 return "BEGIN EXCLUSIVE;";
             default:
                 return "BEGIN;";
