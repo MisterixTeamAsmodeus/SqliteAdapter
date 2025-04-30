@@ -1,20 +1,20 @@
 cmake_minimum_required(VERSION 3.8)
 
 set(sqlite_adapter_project_name SqliteAdapter)
-option(SQLITE_ADAPTER_EXAMPLE "Add examples file as executable (on|off)" OFF )
+option(SQLITE_ADAPTER_EXAMPLE "Add examples file as executable (on|off)" OFF)
 
 project(${sqlite_adapter_project_name} LANGUAGES CXX)
 
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
 
-if(NOT TARGET SQLite3)
+if (NOT TARGET SQLite3)
     add_subdirectory(include/external/sqlite-amalgamation)
-endif()
+endif ()
 
-if(NOT TARGET DatabaseAdapter)
+if (NOT TARGET DatabaseAdapter)
     add_subdirectory(include/external/DatabaseAdapter)
-endif()
+endif ()
 
 add_library(${PROJECT_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 

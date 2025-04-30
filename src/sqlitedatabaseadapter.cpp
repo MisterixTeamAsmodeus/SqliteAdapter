@@ -4,24 +4,24 @@
 #include "SqliteAdapter/sqlitetransaction.h"
 #include "SqliteAdapter/transactiontype.h"
 
-#include <DatabaseAdapter/opendatabaseexception.h>
+#include <DatabaseAdapter/exception/opendatabaseexception.h>
 
 // https://www.sqlite.org/cintro.html
 // https://www.book2s.com/tutorials/sqlite-cpp.html
 
-namespace DatabaseAdapter {
+namespace database_adapter {
 
-SqliteDatabaseAdapter::SqliteDatabaseAdapter(const Models::DatabaseSettings& settings)
+sqlite_database_adapter::sqlite_database_adapter(const models::database_settings& settings)
     : IDataBaseDriver(settings)
 {
 }
 
-SqliteDatabaseAdapter::~SqliteDatabaseAdapter()
+sqlite_database_adapter::~sqlite_database_adapter()
 {
     sqlite3_close(_database);
 }
 
-bool SqliteDatabaseAdapter::connect()
+bool sqlite_database_adapter::connect()
 {
     if(sqlite3_open(_settings.url.c_str(), &_database) != SQLITE_OK) {
         std::string _last_error = "Can't open database: ";
@@ -32,22 +32,22 @@ bool SqliteDatabaseAdapter::connect()
     return true;
 }
 
-bool SqliteDatabaseAdapter::is_open()
+bool sqlite_database_adapter::is_open()
 {
     return _database != nullptr;
 }
 
-bool SqliteDatabaseAdapter::disconnect() const
+bool sqlite_database_adapter::disconnect() const
 {
     return sqlite3_close(_database) == SQLITE_OK;
 }
 
-Models::QueryResult SqliteDatabaseAdapter::exec(const std::string& query)
+models::query_result sqlite_database_adapter::exec(const std::string& query)
 {
-    return Helpers::exec_sqlite_script(_database, query);
+    return helpers::exec_sqlite_script(_database, query);
 }
 
-std::shared_ptr<ITransaction> SqliteDatabaseAdapter::open_transaction(int type) const
+std::shared_ptr<ITransaction> sqlite_database_adapter::open_transaction(int type) const
 {
     const auto sql = [&type]() {
         switch(type) {
@@ -65,7 +65,7 @@ std::shared_ptr<ITransaction> SqliteDatabaseAdapter::open_transaction(int type) 
     if(sqlite3_exec(_database, sql, nullptr, nullptr, nullptr) != SQLITE_OK)
         return nullptr;
 
-    return std::make_shared<SqliteTransaction>(_database);
+    return std::make_shared<sqlite_transaction>(_database);
 }
 
-} // namespace DatabaseAdapter
+} // namespace database_adapter

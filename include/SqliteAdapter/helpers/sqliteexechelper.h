@@ -3,8 +3,8 @@
 #include <DatabaseAdapter/model/queryresult.h>
 #include <sqlite-amalgamation/sqlite3.h>
 
-namespace DatabaseAdapter {
-namespace Helpers {
+namespace database_adapter {
+namespace helpers {
 /**
  * Обёртка для выполнения запроса в sqlite3
  * @param database база где нужно выполнить запрос
@@ -12,6 +12,6 @@ namespace Helpers {
  * @return Результат выполнения запроса
  * @throws Выбрасывает sql_exception, если произошла ошибка выполнения запроса
  */
-Models::QueryResult exec_sqlite_script(sqlite3* database, const std::string& query);
-} // namespace Helpers
-} // namespace DatabaseAdapter
+models::query_result exec_sqlite_script(sqlite3* database, const std::string& query);
+} // namespace helpers
+} // namespace database_adapter

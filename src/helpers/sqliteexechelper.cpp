@@ -1,13 +1,14 @@
+#include "SqliteAdapter/helpers/sqliteexechelper.h"
+
+#include <DatabaseAdapter/exception/sqlexception.h>
 #include <DatabaseAdapter/idatabasedriver.h>
-#include <DatabaseAdapter/sqlexception.h>
-#include <SqliteAdapter/helpers/sqliteexechelper.h>
 
-namespace DatabaseAdapter {
-namespace Helpers {
+namespace database_adapter {
+namespace helpers {
 
-Models::QueryResult exec_sqlite_script(sqlite3* database, const std::string& query)
+models::query_result exec_sqlite_script(sqlite3* database, const std::string& query)
 {
-    using namespace DatabaseAdapter;
+    using namespace database_adapter;
     sqlite3_stmt* stmt;
 
     if(sqlite3_prepare_v2(database, query.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
@@ -18,9 +19,9 @@ Models::QueryResult exec_sqlite_script(sqlite3* database, const std::string& que
 
     int rc = sqlite3_step(stmt);
 
-    Models::QueryResult result;
+    models::query_result result;
     while(rc == SQLITE_ROW) {
-        Models::QueryResult::ResultRow row;
+        models::query_result::result_row row;
         for(int i = 0; i < sqlite3_column_count(stmt); i++) {
             const auto column_name = sqlite3_column_name(stmt, i);
             const auto column_value = reinterpret_cast<const char*>(sqlite3_column_text(stmt, i));
@@ -40,5 +41,5 @@ Models::QueryResult exec_sqlite_script(sqlite3* database, const std::string& que
 
     return result;
 }
-} // namespace Helpers
-} // namespace DatabaseAdapter
+} // namespace helpers
+} // namespace database_adapter

@@ -3,31 +3,31 @@
 #include <DatabaseAdapter/databaseadapter.h>
 #include <external/sqlite-amalgamation/sqlite3.h>
 
-namespace DatabaseAdapter {
+namespace database_adapter {
 
 /**
  * Define для настроек подключения к Sqlite
  * @param url Путь до файла базы данных
  */
-using SqliteSettings = Models::DatabaseSettings;
+using sqlite_settings = models::database_settings;
 
-class SqliteDatabaseAdapter final : public IDataBaseDriver
+class sqlite_database_adapter final : public IDataBaseDriver
 {
 public:
-    explicit SqliteDatabaseAdapter(const Models::DatabaseSettings& settings);
+    explicit sqlite_database_adapter(const models::database_settings& settings);
 
-    ~SqliteDatabaseAdapter() override;
+    ~sqlite_database_adapter() override;
 
     bool connect() override;
     bool is_open() override;
 
     bool disconnect() const override;
 
-    Models::QueryResult exec(const std::string& query) override;
+    models::query_result exec(const std::string& query) override;
     std::shared_ptr<ITransaction> open_transaction(int type) const override;
 
 private:
     sqlite3* _database = nullptr;
 };
 
-}; // namespace DatabaseAdapter
+}; // namespace database_adapter

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace DatabaseAdapter {
+namespace database_adapter {
 /// Типы транзакции поддерживаемые в sqlite3
 enum class TransactionType : uint8_t
 {
@@ -10,4 +10,4 @@ enum class TransactionType : uint8_t
     IMMEDIATE,
     EXCLUSIVE
 };
-} // namespace DatabaseAdapter
+} // namespace database_adapter

@@ -3,14 +3,14 @@
 #include <DatabaseAdapter/databaseadapter.h>
 #include <external/sqlite-amalgamation/sqlite3.h>
 
-namespace DatabaseAdapter {
+namespace database_adapter {
 
-class SqliteTransaction final : public ITransaction
+class sqlite_transaction final : public ITransaction
 {
 public:
-    explicit SqliteTransaction(sqlite3* database);
+    explicit sqlite_transaction(sqlite3* database);
 
-    Models::QueryResult exec(const std::string& query) override;
+    models::query_result exec(const std::string& query) override;
     bool commit() override;
     bool rollback(const std::string& save_point) override;
     bool add_save_point(const std::string& save_point) override;
@@ -19,4 +19,4 @@ private:
     sqlite3* _database;
 };
 
-} // namespace DatabaseAdapter
+} // namespace database_adapter
