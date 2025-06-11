@@ -18,6 +18,8 @@ public:
 
     ~sqlite_database_adapter() override;
 
+    std::shared_ptr<IDataBaseDriver> inject() override;
+
     bool connect() override;
     bool is_open() override;
 

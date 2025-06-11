@@ -21,6 +21,11 @@ sqlite_database_adapter::~sqlite_database_adapter()
     sqlite3_close(_database);
 }
 
+std::shared_ptr<IDataBaseDriver> sqlite_database_adapter::inject()
+{
+    return std::make_shared<sqlite_database_adapter>(_settings);
+}
+
 bool sqlite_database_adapter::connect()
 {
     if(sqlite3_open(_settings.url.c_str(), &_database) != SQLITE_OK) {
@@ -39,7 +44,16 @@ bool sqlite_database_adapter::is_open()
 
 bool sqlite_database_adapter::disconnect() const
 {
-    return sqlite3_close(_database) == SQLITE_OK;
+    if(_database == nullptr)
+        return true;
+
+    if(sqlite3_close(_database) != SQLITE_OK) {
+        std::string _last_error = "Can't open database: ";
+        _last_error.append(sqlite3_errmsg(_database));
+        throw open_database_exception(std::move(_last_error));
+    }
+
+    return true;
 }
 
 models::query_result sqlite_database_adapter::exec(const std::string& query)

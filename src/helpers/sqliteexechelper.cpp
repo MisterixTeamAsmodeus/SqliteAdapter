@@ -39,6 +39,8 @@ models::query_result exec_sqlite_script(sqlite3* database, const std::string& qu
         throw sql_exception(std::move(_last_error), query);
     }
 
+    sqlite3_finalize(stmt);
+
     return result;
 }
 } // namespace helpers
