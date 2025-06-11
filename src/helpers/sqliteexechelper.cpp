@@ -3,6 +3,8 @@
 #include <DatabaseAdapter/exception/sqlexception.h>
 #include <DatabaseAdapter/idatabasedriver.h>
 
+#include <iostream>
+
 namespace database_adapter {
 namespace helpers {
 
@@ -10,6 +12,9 @@ models::query_result exec_sqlite_script(sqlite3* database, const std::string& qu
 {
     using namespace database_adapter;
     sqlite3_stmt* stmt;
+
+    std::cout << query << "\n"
+              << "\n";
 
     if(sqlite3_prepare_v2(database, query.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         std::string _last_error = "Failed to prepare statement: ";

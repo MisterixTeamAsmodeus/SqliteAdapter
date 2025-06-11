@@ -6,6 +6,8 @@
 
 #include <DatabaseAdapter/exception/opendatabaseexception.h>
 
+#include <iostream>
+
 // https://www.sqlite.org/cintro.html
 // https://www.book2s.com/tutorials/sqlite-cpp.html
 
@@ -18,7 +20,15 @@ sqlite_database_adapter::sqlite_database_adapter(const models::database_settings
 
 sqlite_database_adapter::~sqlite_database_adapter()
 {
-    sqlite3_close(_database);
+    if(_database == nullptr)
+        return;
+
+    if(sqlite3_close(_database) != SQLITE_OK) {
+        std::string last_error = "Can't close database: ";
+        last_error.append(sqlite3_errmsg(_database));
+        std::cout << last_error;
+        throw open_database_exception(std::move(last_error));
+    }
 }
 
 std::shared_ptr<IDataBaseDriver> sqlite_database_adapter::inject()
@@ -42,16 +52,19 @@ bool sqlite_database_adapter::is_open()
     return _database != nullptr;
 }
 
-bool sqlite_database_adapter::disconnect() const
+bool sqlite_database_adapter::disconnect()
 {
     if(_database == nullptr)
         return true;
 
     if(sqlite3_close(_database) != SQLITE_OK) {
-        std::string _last_error = "Can't open database: ";
-        _last_error.append(sqlite3_errmsg(_database));
-        throw open_database_exception(std::move(_last_error));
+        std::string last_error = "Can't close database: ";
+        last_error.append(sqlite3_errmsg(_database));
+        std::cout << last_error;
+        throw open_database_exception(std::move(last_error));
     }
+
+    _database = nullptr;
 
     return true;
 }

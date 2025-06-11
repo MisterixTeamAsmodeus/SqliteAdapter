@@ -23,7 +23,7 @@ public:
     bool connect() override;
     bool is_open() override;
 
-    bool disconnect() const override;
+    bool disconnect() override;
 
     models::query_result exec(const std::string& query) override;
     std::shared_ptr<ITransaction> open_transaction(int type) const override;
