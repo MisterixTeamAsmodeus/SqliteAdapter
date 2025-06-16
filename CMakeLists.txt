@@ -1,9 +1,6 @@
-cmake_minimum_required(VERSION 3.8)
+cmake_minimum_required(VERSION 3.1)
 
-set(sqlite_adapter_project_name SqliteAdapter)
-option(SQLITE_ADAPTER_EXAMPLE "Add examples file as executable (on|off)" OFF)
-
-project(${sqlite_adapter_project_name} LANGUAGES CXX)
+project(SqliteAdapter LANGUAGES CXX)
 
 file(GLOB_RECURSE HEADER_FILES ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h)
 file(GLOB_RECURSE SOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp)
