@@ -17,9 +17,8 @@ add_library(${PROJECT_NAME} STATIC ${HEADER_FILES} ${SOURCE_FILES})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_14)
 
-set_target_properties(${PROJECT_NAME}
-        PROPERTIES
-        OUTPUT_NAME ${PROJECT_NAME}
+target_include_directories(${PROJECT_NAME} PUBLIC
+        include/external
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -29,10 +28,6 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
         DatabaseAdapter
-)
-
-target_include_directories(${PROJECT_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/external
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
