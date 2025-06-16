@@ -45,16 +45,18 @@ bool sqlite_database_adapter::is_open()
     return _database != nullptr;
 }
 
-bool sqlite_database_adapter::disconnect() const
+bool sqlite_database_adapter::disconnect()
 {
     if(_database == nullptr)
         return true;
 
     if(sqlite3_close(_database) != SQLITE_OK) {
-        std::string _last_error = "Can't open database: ";
-        _last_error.append(sqlite3_errmsg(_database));
-        throw open_database_exception(std::move(_last_error));
+        std::string last_error = "Can't close database: ";
+        last_error.append(sqlite3_errmsg(_database));
+        throw open_database_exception(std::move(last_error));
     }
+
+    _database = nullptr;
 
     return true;
 }
