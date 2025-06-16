@@ -18,6 +18,9 @@ sqlite_database_adapter::sqlite_database_adapter(const models::database_settings
 
 sqlite_database_adapter::~sqlite_database_adapter()
 {
+    if(_database == nullptr)
+        return;
+
     sqlite3_close(_database);
 }
 
@@ -28,7 +31,7 @@ std::shared_ptr<IDataBaseDriver> sqlite_database_adapter::inject()
 
 bool sqlite_database_adapter::connect()
 {
-    if(sqlite3_open(_settings.url.c_str(), &_database) != SQLITE_OK) {
+    if(sqlite3_open_v2(_settings.url.c_str(), &_database, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, nullptr) != SQLITE_OK) {
         std::string _last_error = "Can't open database: ";
         _last_error.append(sqlite3_errmsg(_database));
         throw open_database_exception(std::move(_last_error));
