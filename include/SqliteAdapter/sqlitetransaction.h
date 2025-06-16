@@ -5,7 +5,7 @@
 
 namespace database_adapter {
 
-class sqlite_transaction final : public ITransaction
+class sqlite_transaction : public ITransaction
 {
 public:
     explicit sqlite_transaction(sqlite3* database);

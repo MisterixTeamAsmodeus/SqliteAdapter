@@ -11,7 +11,7 @@ namespace database_adapter {
  */
 using sqlite_settings = models::database_settings;
 
-class sqlite_database_adapter final : public IDataBaseDriver
+class sqlite_database_adapter : public IDataBaseDriver
 {
 public:
     explicit sqlite_database_adapter(const models::database_settings& settings);
