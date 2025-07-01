@@ -32,7 +32,6 @@ void sqlite_transaction::open_transaction(int type)
 bool sqlite_transaction::commit()
 {
     if(_has_error) {
-        rollback();
         return false;
     }
     _connection->exec("COMMIT;");
