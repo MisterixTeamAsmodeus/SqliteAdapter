@@ -13,10 +13,15 @@ class sqlite_transaction final : public ITransaction
 public:
     explicit sqlite_transaction(std::shared_ptr<sqlite_connection> connection);
     explicit sqlite_transaction(std::shared_ptr<IConnection> connection);
+    ~sqlite_transaction() override = default;
 
+    models::query_result exec(const std::string& query) override;
     bool commit() override;
-    bool add_save_point(const std::string& save_point) override;
-    bool rollback_to_save_point(const std::string& save_point) override;
+    void add_save_point(const std::string& save_point) override;
+    void rollback_to_save_point(const std::string& save_point) override;
+
+private:
+    bool _has_error = false;
 };
 
 } // namespace database_adapter

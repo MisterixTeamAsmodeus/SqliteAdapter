@@ -29,6 +29,9 @@ models::query_result sqlite_connection::exec(const std::string& query)
     using namespace database_adapter;
     sqlite3_stmt* stmt;
 
+    std::cout << query << "\n"
+              << "\n";
+
     if(sqlite3_prepare_v2(_connection, query.c_str(), -1, &stmt, nullptr) != SQLITE_OK) {
         std::string _last_error = "Failed to prepare statement: ";
         _last_error.append(sqlite3_errmsg(_connection));
