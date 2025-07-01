@@ -16,28 +16,15 @@ sqlite_database_adapter::sqlite_database_adapter(const std::shared_ptr<sqlite_co
 {
 }
 
-std::shared_ptr<ITransaction> sqlite_database_adapter::open_transaction(int type) const
+std::shared_ptr<ITransaction> sqlite_database_adapter::open_transaction(const int type) const
 {
-    const auto sql = [&type]() {
-        switch(type) {
-            case static_cast<int>(TransactionType::DEFERRED):
-                return "BEGIN DEFERRED;";
-            case static_cast<int>(TransactionType::IMMEDIATE):
-                return "BEGIN IMMEDIATE;";
-            case static_cast<int>(TransactionType::EXCLUSIVE):
-                return "BEGIN EXCLUSIVE;";
-            default:
-                return "BEGIN;";
-        }
-    }();
-
+    auto transaction = std::make_shared<sqlite_transaction>(_connection);
     try {
-        _connection->exec(sql);
+        transaction->open_transaction(type);
+        return transaction;
     } catch(...) {
         return nullptr;
     }
-
-    return std::make_shared<sqlite_transaction>(_connection);
 }
 
 } // namespace database_adapter

@@ -2,27 +2,31 @@
 
 #include "DatabaseAdapter/exception/sqlexception.h"
 #include "SqliteAdapter/sqliteconnection.h"
+#include "SqliteAdapter/transactiontype.h"
 
 namespace database_adapter {
-
-sqlite_transaction::sqlite_transaction(std::shared_ptr<sqlite_connection> connection)
-    : ITransaction(std::move(connection))
-{
-}
 
 sqlite_transaction::sqlite_transaction(std::shared_ptr<IConnection> connection)
     : ITransaction(std::move(connection))
 {
 }
 
-models::query_result sqlite_transaction::exec(const std::string& query)
+void sqlite_transaction::open_transaction(int type)
 {
-    try {
-        return ITransaction::exec(query);
-    } catch(const sql_exception&) {
-        _has_error = true;
-        throw;
-    }
+    const auto sql = [&type]() {
+        switch(type) {
+            case static_cast<int>(TransactionType::DEFERRED):
+                return "BEGIN DEFERRED;";
+            case static_cast<int>(TransactionType::IMMEDIATE):
+                return "BEGIN IMMEDIATE;";
+            case static_cast<int>(TransactionType::EXCLUSIVE):
+                return "BEGIN EXCLUSIVE;";
+            default:
+                return "BEGIN;";
+        }
+    }();
+
+    _connection->exec(sql);
 }
 
 bool sqlite_transaction::commit()
@@ -37,6 +41,7 @@ bool sqlite_transaction::commit()
 
 void sqlite_transaction::rollback_to_save_point(const std::string& save_point)
 {
+    _has_error = false;
     const auto sql = save_point.empty() ? "ROLLBACK;" : "ROLLBACK TO " + save_point;
     _connection->exec(sql);
 }
