@@ -16,7 +16,7 @@ public:
 
     void open_transaction(int type) override;
 
-    bool commit() override;
+    void commit() override;
     void add_save_point(const std::string& save_point) override;
     void rollback_to_save_point(const std::string& save_point) override;
 };

@@ -29,18 +29,13 @@ void sqlite_transaction::open_transaction(int type)
     _connection->exec(sql);
 }
 
-bool sqlite_transaction::commit()
+void sqlite_transaction::commit()
 {
-    if(_has_error) {
-        return false;
-    }
     _connection->exec("COMMIT;");
-    return true;
 }
 
 void sqlite_transaction::rollback_to_save_point(const std::string& save_point)
 {
-    _has_error = false;
     const auto sql = save_point.empty() ? "ROLLBACK;" : "ROLLBACK TO " + save_point;
     _connection->exec(sql);
 }
